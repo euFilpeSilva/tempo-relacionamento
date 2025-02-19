@@ -238,17 +238,54 @@
     <script>
         const dataInicioPrimeiroEncontro = new Date('2024-05-30T00:00:00');
         const dataInicioConversa = new Date('2024-02-17T00:00:00');
-        const dataPedidoNamoro = new Date('2024-08-15T00:00:00');
+        const dataPedidoNamoro = new Date('2024-08-17T00:00:00');
 
         function calcularDiferenca(data) {
             const agora = new Date();
-            const diferenca = agora - data;
-            const anos = Math.floor(diferenca / 31536000000);
-            const meses = Math.floor((diferenca % 31536000000) / 2592000000);
-            const dias = Math.floor((diferenca % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-            const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
-            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            let anos = agora.getFullYear() - data.getFullYear();
+            let meses = agora.getMonth() - data.getMonth();
+            let dias = agora.getDate() - data.getDate() -1;
+            let horas = agora.getHours() - data.getHours();
+            let minutos = agora.getMinutes() - data.getMinutes();
+            let segundos = agora.getSeconds() - data.getSeconds();
+
+            // Ajuste de segundos e minutos negativos
+            if (segundos < 0) {
+                segundos += 60;
+                minutos--;
+            }
+            if (minutos < 0) {
+                minutos += 60;
+                horas--;
+            }
+
+            // Ajuste de horas negativas
+            if (horas < 0) {
+                horas += 24;
+                dias--;
+            }
+
+            // **Correção principal: não contar um dia extra**
+            if (agora.getHours() < data.getHours() || 
+                (agora.getHours() === data.getHours() && agora.getMinutes() < data.getMinutes()) ||
+                (agora.getHours() === data.getHours() && agora.getMinutes() === data.getMinutes() && agora.getSeconds() < data.getSeconds())) {
+                dias--;
+            }
+
+            // Ajuste de dias negativos
+            if (dias < 0) {
+                meses--;
+                let ultimoDiaMesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
+                dias += ultimoDiaMesAnterior;
+            }
+
+            // Ajuste de meses negativos
+            if (meses < 0) {
+                anos--;
+                meses += 12;
+            }
+
             return `${anos} anos, ${meses} meses, ${dias} dias, ${horas} horas, ${minutos} minutos, ${segundos} segundos`;
         }
 
