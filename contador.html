@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contadores de Amor</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #ffecd2, #fcb69f);
+            color: #333;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #contadorConversa, #contador, #contadorPedido {
+            margin: 20px;
+            padding: 20px;
+            border: 2px solid #ff7e5f;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            position: relative;
+            z-index: 2;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #contadorConversa:hover, #contador:hover, #contadorPedido:hover {
+            transform: scale(1.05);
+        }
+
+        #background-container {
+            position: fixed;
+            top: 0;
+            padding-top: 280px;
+            padding-left: 80px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+    #background-container {
+        padding-left: 1px;
+    }
+}
+
+        .background-image {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            opacity: 0;
+            animation: fadeMove 4s linear forwards;
+        }
+
+        @keyframes fadeMove {
+            0% {
+                opacity: 0;
+                transform: translate(var(--startX), var(--startY)) scale(0.5);
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--endX), var(--endY)) scale(1);
+            }
+        }
+
+        #romantic-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            box-shadow: 0 0 15px rgba(255, 0, 128, 0.3);
+            animation: glow 2s infinite alternate ease-in-out;
+            flex-wrap: wrap;
+        }
+
+        .romantic-box {
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+            max-width: 45%;
+            margin-bottom: 20px;
+        }
+
+        .romantic-box:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 15px rgba(255, 0, 128, 0.3);
+            }
+            100% {
+                box-shadow: 0 0 25px rgba(255, 0, 128, 0.6);
+            }
+        }
+
+        #mural {
+            position: relative;
+            width: 150%;
+            height: 500px;
+            margin-top: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .mural-item {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .mural-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+
+
+            #romantic-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px; /* Define um espaçamento entre os itens */
+}
+
+@media (max-width: 768px) {
+    #romantic-container {
+        flex-direction: row; /* Muda para layout horizontal em telas menores */
+        flex-wrap: wrap; /* Permite que os itens quebrem para a linha seguinte se necessário */
+        justify-content: space-between; /* Ajusta o espaçamento entre os itens */
+    }
+
+    #romantic-container > * {
+        flex: 1 1 auto; /* Permite que os itens cresçam e encolham */
+        min-width: 100px; /* Define uma largura mínima */
+        max-width: 200px; /* Define uma largura máxima para os itens */
+    }
+}
+
+
+
+            .romantic-box {
+                max-width: 90%;
+            }
+
+            #mural {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .mural-item {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            #contadorConversa, #contador, #contadorPedido {
+                padding: 15px;
+                font-size: 12px;
+            }
+
+            .romantic-box {
+                padding: 10px;
+                max-width: 100%;
+            }
+
+            .mural-item {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="background-container">
+        <div style="display: flex; align-items: center; gap: 10;">
+            <div id="romantic-container">
+                <div class="romantic-box">
+                    <p>Primeira conversa</p>
+                    <pre>17/02/2024</pre>
+                </div>
+                <div class="romantic-box">
+                    <p>Primeiro encontro</p>
+                    <pre>30/05/2024</pre>
+                </div>
+                <div class="romantic-box">
+                    <p>Pedido de namoro</p>
+                    <pre>17/08/2024</pre>
+                </div>
+            </div>
+        </div>
+    
+        <div id="mural"></div>
+    </div>
+
+    <div id="contadorConversa"></div>
+    <div id="contador"></div>
+    <div id="contadorPedido"></div>
+
+    <script>
+        const dataInicioPrimeiroEncontro = new Date('2024-05-30T00:00:00');
+        const dataInicioConversa = new Date('2024-02-17T00:00:00');
+        const dataPedidoNamoro = new Date('2024-08-15T00:00:00');
+
+        function calcularDiferenca(data) {
+            const agora = new Date();
+            const diferenca = agora - data;
+            const anos = Math.floor(diferenca / 31536000000);
+            const meses = Math.floor((diferenca % 31536000000) / 2592000000);
+            const dias = Math.floor((diferenca % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+            return `${anos} anos, ${meses} meses, ${dias} dias, ${horas} horas, ${minutos} minutos, ${segundos} segundos`;
+        }
+
+        function atualizarContador() {
+            document.getElementById('contadorConversa').innerHTML = `Desde a primeira conversa: ${calcularDiferenca(dataInicioConversa)}`;
+            document.getElementById('contador').innerHTML = `Desde o primeiro encontro: ${calcularDiferenca(dataInicioPrimeiroEncontro)}`;
+            document.getElementById('contadorPedido').innerHTML = `Desde o pedido de namoro: ${calcularDiferenca(dataPedidoNamoro)}`;
+        }
+
+        setInterval(atualizarContador, 1000);
+        atualizarContador();
+
+        const images = [
+            'img/beijoBoxexa.jpeg',
+            'img/beijo-boxexa02.jpeg',
+            'img/restaurante_pedido_n.jpeg',
+            'img/posando_piri.jpeg',
+            'img/ponte_luzes_piri.jpeg',
+            'img/passeio_mato.jpeg',
+            'img/natal_arvore_piri.jpeg',
+            'img/esconde_esconde.jpeg',
+            'img/beijo_encantador_piri.jpeg',
+            'img/aniversario_amigaDela.jpeg',
+            'img/aniversario_amidaDela02.jpeg',
+            'img/almoco_igreja.jpeg',
+        ];
+
+        function getRandomPosition() {
+            return {
+                x: Math.random() * (window.innerWidth - 260) + 'px',
+                y: Math.random() * 350 + 'px'
+            };
+        }
+
+        function getRandomItem(array, previousIndex) {
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * array.length);
+            } while (newIndex === previousIndex);
+            return { newIndex, item: array[newIndex] };
+        }
+
+        function showMuralItem() {
+            const { newIndex: imageIndex, item: imageItem } = getRandomItem(images, previousImageIndex);
+            const { newIndex: textIndex, item: textItem } = getRandomItem(muralItems, previousTextIndex);
+
+            const item = document.createElement('div');
+            item.className = 'mural-item';
+
+            if (Math.random() > 0.5) {
+                const img = document.createElement('img');
+                img.src = imageItem;
+                item.appendChild(img);
+                previousImageIndex = imageIndex;
+            } else {
+                item.textContent = textItem.content || textItem;
+                previousTextIndex = textIndex;
+            }
+
+            const pos = getRandomPosition();
+            item.style.left = pos.x;
+            item.style.top = pos.y;
+            mural.appendChild(item);
+
+            setTimeout(() => {
+                item.style.opacity = 1;
+                item.style.transform = 'scale(1)';
+            }, 100);
+
+            setTimeout(() => {
+                item.style.opacity = 0;
+                item.style.transform = 'scale(0.5)';
+                setTimeout(() => item.remove(), 1000);
+            }, 5000);
+        }
+
+        let previousImageIndex = -1;
+        let previousTextIndex = -1;
+
+        setInterval(showMuralItem, 2000);
+
+        const muralItems = [
+            { content: 'Passeio romântico à beira do rio' },
+            { content: 'Pedido de namoro na praça' },
+            { type: 'text', content: 'Você ilumina todos os meus dias ✨' },
+            { type: 'text', content: 'Com você, tudo é mais especial ❤️' },
+            { type: 'text', content: 'Nosso amor é a verdadeira definição de felicidade 💕' },
+            { type: 'text', content: 'Você é o meu sonho realizado 😘' },
+            { type: 'text', content: 'Cada instante ao seu lado é único e perfeito 💖' },
+            { type: 'text', content: 'Juntos, somos imparáveis! 🌟' },
+            { type: 'text', content: 'Em você, encontrei o meu lugar no mundo 🌍' },
+            { type: 'text', content: 'Não há nada melhor do que viver ao seu lado ❤️' },
+            { type: 'text', content: 'Você faz meu coração bater mais forte a cada dia 💓' },
+            { type: 'text', content: 'Ao seu lado, todos os momentos são mágicos ✨' },
+
+            'Flores enviadas pelo namorado(a)',
+            'Piquenique no parque',
+            'Aniversário surpresa da namorada',
+        ];
+    </script>
+</body>
+</html>
